@@ -19,7 +19,7 @@ player.SetStartingGold(100);
 while (true)
 {
     Console.WriteLine($"\n[HP: {player.CurrentHp}/{player.MaxHp} | Energy: {player.CurrentEnergy}/{player.MaxEnergy} | Gold: {player.Gold} GP]");
-    Console.Write("[1] Log Boss Kill  [2] View Drop Log  [3] View Inventory  [4] Drop Item  [5] Rest at Lumbridge [99] Fight Hill Giant  [0] Exit\nChoice: ");
+    Console.Write("[1] Log Boss Kill  [2] View Drop Log  [3] View Inventory  [4] Drop Item  [5] Rest at Lumbridge [6] Top Hits [99] Fight Hill Giant  [0] Exit\nChoice: ");
     var input = Console.ReadLine()?.Trim();
 
     if (input == "0") break;
@@ -63,6 +63,10 @@ while (true)
     {
         player.ResetHealth();
         player.ResetEnergy();
+    }
+    else if (input == "6")
+    { 
+        player.FindTopThreeHits();
     }
     else if (input == "99")
     {
@@ -123,6 +127,7 @@ static void StartGiantFight(Player player, List<BossLog> bossLogs)
         if (choice == "1")
         {
             int playerHit = rng.Next(0, 15);
+            player.AddPlayerHit(playerHit);
             giantHp -= playerHit;
             player.CurrentEnergy = Math.Min(player.MaxEnergy, player.CurrentEnergy + 10);
             Console.ForegroundColor = ConsoleColor.Green;
