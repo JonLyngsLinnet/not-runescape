@@ -8,6 +8,8 @@ public class Player
 
     public List<int> HitHistory { get; set; } = new List<int>();
     
+    public int CurrentEnergy { get; set; } = 100;
+    public int MaxEnergy { get; set; } = 100;
     public Dictionary<string, int> Inventory { get; set; } = new(StringComparer.OrdinalIgnoreCase)
     {
         { "Lobster", 3 },
@@ -75,6 +77,11 @@ public class Player
     public void ResetHealth()
     {
         CurrentHp = MaxHp;
+    }
+
+    public void ResetEnergy()
+    {
+        CurrentEnergy = MaxEnergy;
     }
 
     public void PrintInventory()
