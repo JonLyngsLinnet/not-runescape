@@ -5,6 +5,8 @@ public class Player
     public int CurrentHp { get; set; } = 35;
     public int MaxHp { get; set; } = 35;
     public int Gold { get; set; } = 50;
+    public int CurrentEnergy { get; set; } = 100;
+    public int MaxEnergy { get; set; } = 100;
     public Dictionary<string, int> Inventory { get; set; } = new(StringComparer.OrdinalIgnoreCase)
     {
         { "Lobster", 3 },
@@ -42,6 +44,11 @@ public class Player
     public void ResetHealth()
     {
         CurrentHp = MaxHp;
+    }
+
+    public void ResetEnergy()
+    {
+        CurrentEnergy = MaxEnergy;
     }
 
     public void PrintInventory()
