@@ -18,7 +18,7 @@ player.SetStartingGold(100);
 
 while (true)
 {
-    Console.WriteLine($"\n[HP: {player.CurrentHp}/{player.MaxHp} | Gold: {player.Gold} GP]");
+    Console.WriteLine($"\n[HP: {player.CurrentHp}/{player.MaxHp} | Energy: {player.CurrentEnergy}/{player.MaxEnergy} | Gold: {player.Gold} GP]");
     Console.Write("[1] Log Boss Kill  [2] View Drop Log  [3] View Inventory  [4] Drop Item  [5] Rest at Lumbridge [99] Fight Hill Giant  [0] Exit\nChoice: ");
     var input = Console.ReadLine()?.Trim();
 
@@ -62,6 +62,7 @@ while (true)
     else if (input == "5")
     {
         player.ResetHealth();
+        player.ResetEnergy();
     }
     else if (input == "99")
     {
@@ -115,14 +116,15 @@ static void StartGiantFight(Player player, List<BossLog> bossLogs)
 
     while (player.CurrentHp > 0 && giantHp > 0)
     {
-        Console.WriteLine($"Your HP: {player.CurrentHp}/{player.MaxHp} | Hill Giant HP: {giantHp}");
-        Console.Write("Action: [1] Slash with Rune Scimitar  [2] Eat Lobster  [3] Special Attack (50 GP)  [4] Flee Choice: ");
+        Console.WriteLine($"Your HP: {player.CurrentHp}/{player.MaxHp} | Your Energy {player.CurrentEnergy}/{player.MaxEnergy} | Hill Giant HP: {giantHp}");
+        Console.Write("Action: [1] Slash with Rune Scimitar  [2] Eat Lobster  [3] Special Attack (50 Energy)  [4] Flee Choice: ");
         var choice = Console.ReadLine()?.Trim();
 
         if (choice == "1")
         {
             int playerHit = rng.Next(0, 15);
             giantHp -= playerHit;
+            player.CurrentEnergy = Math.Min(player.MaxEnergy, player.CurrentEnergy + 10);
             Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine($"\nYou slash the Hill Giant for a {playerHit}!");
             Console.ResetColor();
@@ -142,13 +144,13 @@ static void StartGiantFight(Player player, List<BossLog> bossLogs)
         }
         else if (choice == "3")
         {
-            if (player.Gold < 50)
+            if (player.CurrentEnergy < 50)
             {
-                Console.WriteLine("\nYou don't have enough GP to use a special attack! (Requires 50 GP)");
+                Console.WriteLine("\nYou don't have enough energy to use a special attack! (Requires 50 energy)");
             }
             else
             {
-                player.Gold -= 50;
+                player.CurrentEnergy -= 50;
                 int hit1 = rng.Next(0, 10);
                 int hit2 = rng.Next(0, 10);
                 int totalHit = hit1 + hit2;
